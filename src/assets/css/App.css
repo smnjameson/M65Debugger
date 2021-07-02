@@ -1,0 +1,186 @@
+
+  
+  body {
+    color: #fff;
+    background-color: #000;
+    overflow: hidden;
+  }
+  
+  h1 {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 21px;
+    font-weight: 200;
+  }
+
+
+  .mono {
+    font-family: monospace;
+    font-size: 16px;
+    font-weight: 200;    
+  }
+
+  .container {
+    transform-origin: 0 0;
+    overflow: none;
+  }
+  .width8 {
+    width: 80px;
+    background-color: #000;
+    color: #fff;
+    border:none;
+  }
+
+  .width4 {
+    width: 40px;
+    background-color: #000;
+    color: #fff;
+    border:none;
+  }
+
+  .width2 {
+    width: 20px;
+    background-color: #000;
+    color: #fff;
+    border:none;
+  }
+
+  td {
+    text-align: center;
+  }
+
+  .compborder {
+    border: 2px solid grey;
+    border-radius: 5px;
+  }
+
+ .registers {
+    /* position: absolute;
+    right: 10px;
+    top: 10px; */
+    width: 390px;
+  }
+
+  .memory {
+    /* position: absolute;
+    right: 10px;
+    top: 60px; */
+    height:350px;
+
+  }
+  
+  .mathunit {
+    border-collapse:collapse;
+  }
+  
+  .rowinputheading {
+    line-height: 1.2em;
+    font-family: monospace;
+    font-size: 14px;
+    font-weight: 800;    
+    text-align: right;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-left: 1px solid green;
+    border-right: 1px solid green;
+    border-bottom: 1px solid green;
+  }
+  .rowinputstats {
+    line-height: 1.2em;
+    font-family: monospace;
+    font-size: 14px;
+    font-weight: 200;    
+    text-align: right;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-left: 1px solid green;
+    border-right: 1px solid green;
+  }
+  
+  .vicheading {
+    line-height: 1.2em;
+    font-family: monospace;
+    font-size: 14px;
+    font-weight: 800;    
+    text-align: center;
+    border-left: 1px solid orange;
+    border-right: 1px solid orange;
+    border-bottom: 1px solid orange;
+  }
+  .vicstats {
+    line-height: 1.2em;
+    font-family: monospace;
+    font-size: 14px;
+    font-weight: 200;    
+    text-align: right;
+    border-left: 1px solid orange;
+    border-right: 1px solid orange;
+    vertical-align: top;
+  }
+
+  .vic4valueOdd {
+    padding-left: 15px;
+    padding-right: 5px;
+    background-color: #222;
+  }
+  .vic4valueEven {
+    padding-left: 15px;
+    background-color: #111;
+    padding-right: 5px;
+  }
+
+  /* table {
+    border:none;
+    border-collapse: collapse;
+}
+
+table td {
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+}
+
+table td:first-child {
+    border-left: none;
+} */
+
+  .code {
+    /* position: absolute;
+    left: 10px;
+    top: 60px; */
+    height:350px;
+    width: 390px;
+  }
+
+  .rowlabel {
+
+    list-style-type: none;
+  }
+
+  .rowinput {
+    line-height: 1.2em;
+    font-family: monospace;
+    font-size: 16px;
+    font-weight: 200;    
+    text-align: right;
+  }
+
+  .codeinput {
+    font-family: monospace;
+
+  }
+
+  .codeinputLA {
+    text-align: left;
+    user-select: none;
+  }
+
+  .memorybutton {
+    width: 100px;
+    background-color: #000;
+    color: #fff;
+    border: 2px solid green;
+    margin-bottom: 2px;
+  }
+
+  .breakpoint {
+      background-color: #200;
+  }
