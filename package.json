@@ -41,7 +41,9 @@
       "createDesktopShortcut": true
     },
     "buildDependenciesFromSource": true,
-    "npmRebuild": false
+    "npmRebuild": false,
+    "extraFiles": ["client.js"]
+    
   },
   "dependencies": {
     "@serialport/list": "^9.2.0",
