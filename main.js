@@ -1,7 +1,7 @@
 'use strict'
 
 // Import parts of electron to use
-const { app, BrowserWindow, ipcMain, Menu } = require('electron')
+const { app, BrowserWindow, ipcMain, Menu, dialog } = require('electron')
 const path = require('path')
 const url = require('url')
 const prompt = require('electron-prompt');
@@ -43,6 +43,14 @@ let menu = [
     },{
         label: "COM",
         submenu: []
+    },{
+        label: "Help",
+        submenu: [
+            { label: 'About', click: ()=> {
+                dialog.showMessageBox({ message:`M65 Debugger ${app.getVersion()}`})
+            }}
+        ]
+
     }
 ]
 
