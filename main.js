@@ -133,11 +133,11 @@ function connect(comp) {
     // Open errors will be emitted as an error event
     port.on('error', function(err) {
     //   console.log('Error: ', err.message)
-        mainWindow.title = "M65Debugger - Error on "+comport+ " : "+err.message
+        mainWindow && (mainWindow.title = "M65Debugger - Error on "+comport+ " : "+err.message)
     })
     port.on('open', function() {
     //   console.log('Port opened')
-        mainWindow.title = "M65Debugger - Connected on "+comport
+        mainWindow && (mainWindow.title = "M65Debugger - Connected on "+comport)
         mainWindow.reload()
         setTimeout(() => mainWindow.webContents.send('setmode', 'serial'), 1000)
     })
@@ -213,7 +213,7 @@ function createWindow() {
         // Create the browser window.
         mainWindow = new BrowserWindow({
             width: 1190,
-            height: 768,
+            height: 880,
             show: false,
             webPreferences: {
                 nodeIntegration: true,

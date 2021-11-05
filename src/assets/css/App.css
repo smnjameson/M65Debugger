@@ -184,3 +184,106 @@ table td:first-child {
   .breakpoint {
       background-color: #200;
   }
+
+  .RRBData {
+      display: inline-block;
+      font-family: 'Arial Narrow'
+
+  }
+  .RRBNewline {
+      width:25px;
+      height:24px;
+      float:left;
+      clear:both;
+      display:block;
+      margin: 1px;
+  }
+  .RRBLayer {
+      float:left;
+      clear:both;
+      display:block;
+      font-size: 12px;
+      margin: 1px;
+  }
+  .GOTOX {
+      background-color: #280;
+      color: white;
+      width:25px;
+      height:24px;
+      font-size: 10px;
+      margin: 1px;
+      float:left;
+      clear:both;
+      display:block;
+  }
+  
+  .FCM {
+    background-color: #228;
+    color: white;
+    width:25px;
+    height:24px;
+    font-size: 10px;
+    float: left;
+    margin: 1px;
+  }
+
+  .NCM {
+    background-color: #62a;
+    color: white;
+    width:52px;
+    height:24px;
+    font-size: 10px;
+    float: left;
+    margin: 1px;
+  }
+
+.RRBHeader {
+    background-color: #444;
+    color: white;
+    width:25px;
+    height:24px;
+    font-size: 10px;
+    float: left;
+    margin: 1px;
+}
+
+.scrollable {
+    overflow-y: scroll;
+}
+
+.rowselector {
+  width: 100px;
+  background-color: #000;
+  color: #fff;
+  border: 2px solid green;
+  margin-bottom: 2px;
+  /* float:'left'; */
+  display:inline-block;
+  height:32px;
+  top: -10px;
+  position:relative;  
+}
+
+.rrbKey {
+  color: white;
+  width:52px;
+  height: 32px;
+  font-size: 11px;
+  font-family:'Arial narrow';
+  position: relative;
+  line-height: 32px;
+  margin: 2px;
+  top: -10px;
+  position:relative;
+  /* float:'left'; */
+  display:inline-block;
+  text-align:center;
+}
+.rrbKeyText {
+  display:inline-block;
+  /* height:24px; */
+  font-size: 10px;
+  line-height:9px;
+  margin-right:15px;
+  
+}

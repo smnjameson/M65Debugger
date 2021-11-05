@@ -6,6 +6,7 @@ import MemoryPanel from './memory'
 import Code from './code'
 import MathUnit from './mathunit'
 import Vic4 from './vic4'
+import RRB from './rrb'
 
 
 const { ipcRenderer } = require('electron')
@@ -16,6 +17,10 @@ const MT_MEMORY = 0x0002
 const MT_CODE = 0x0003
 const MT_MATHUNIT = 0x0004
 const MT_VIC4 = 0x0005
+const MT_RRB = 0x0006
+const MT_RRB_COL = 0x0007
+const MT_RRB2 = 0x0008
+const MT_RRB_COL2 = 0x0009
 
 class App extends React.Component {
     constructor(props) {
@@ -34,8 +39,20 @@ class App extends React.Component {
             codedata: '',
             mathunit:'',
             vic4: '',
-            connectionMode: ''
+            connectionMode: '', 
+            detailMode: "VIC4",
+            rowdata:'',
+            rowdata2:'',
+            colorrowdata:'',
+            colorrowdata2:'',
+            screenrow:0
         }
+
+        this.screenAddr = ''
+        this.colAddr = ''
+        this.screenAddr2 = ''
+        this.colAddr2 = ''
+        this.rowsize = 0;
 
         this.followPCVal = false;
         this.pc = 0
@@ -52,12 +69,19 @@ class App extends React.Component {
         this.onContinue = this.onContinue.bind(this);
         this.setCom = this.setCom.bind(this);
         this.isConnected = this.isConnected.bind(this);
+        this.getDetailMode = this.getDetailMode.bind(this);
+        this.selectRowRRB = this.selectRowRRB.bind(this);
         this.setupIPC();
 
         this.scalex = 1
         this.scaley = 1
         window.addEventListener('resize', this.handleResize.bind(this))
 
+    }
+
+    selectRowRRB(e) {
+        console.log(parseInt(e.target.value,10))
+        this.setState({screenrow:parseInt(e.target.value,10)})
     }
 
     handleResize() {
@@ -129,10 +153,14 @@ class App extends React.Component {
                             </td> 
                         </tr>
                         <tr>
+
+                            <br/>
+                            <button className="memorybutton" onClick={() => this.setState({detailMode:"VIC4"})}>VIC IV</button>
+                            <button className="memorybutton" onClick={() => this.setState({detailMode:"RRB"})}>RRB</button>
+                        </tr>
+                        <tr>
                             <td colSpan='2'>
-                                <Vic4 
-                                    data={this.state.vic4}
-                                />
+                                { this.getDetailMode(this.state.detailMode)}
                             </td>
                         </tr>   
                         <tr>
@@ -152,10 +180,27 @@ class App extends React.Component {
         )
     }
 
-    setCom() {
-        ipcRenderer.send('changecomport', '') 
+    getDetailMode(detail) {
+        switch(detail) {
+            case "VIC4":
+                return (<Vic4 data={this.state.vic4}/>);
+            case "RRB":
+                return (<RRB    vic={this.state.vic4} 
+                                rowdata={this.state.rowdata} 
+                                colorrowdata={this.state.colorrowdata}
+                                rowdata2={this.state.rowdata2} 
+                                colorrowdata2={this.state.colorrowdata2}
+                                colAddr={this.colAddr}
+                                screenAddr={this.screenAddr}
+                                colAddr2={this.colAddr2}
+                                screenAddr2={this.screenAddr2}
+                                selectRowRRB={this.selectRowRRB}
+                        />);
+        }
+    }
 
-       
+    setCom() {
+        ipcRenderer.send('changecomport', '')     
     }
     
     isConnected(val) {
@@ -239,17 +284,31 @@ class App extends React.Component {
                     newState.mathunit = arg
                     break;
                 case MT_VIC4:
-                    newState.vic4 = arg
+                    if(arg.substr(1,7) === '777D000') newState.vic4 = arg
+                    break;
+                case MT_RRB:
+                    if(arg.substr(1,7) === this.screenAddr) newState.rowdata = arg
+                    break;
+                case MT_RRB_COL:
+                    if(arg.substr(1,7) === this.colAddr) newState.colorrowdata = arg
+                    break;
+                case MT_RRB2:
+                    if((this.rowsize && this.rowsize > 256) && arg.substr(1,7) === this.screenAddr2) newState.rowdata2 = arg
+                    break;
+                case MT_RRB_COL2:
+                    if((this.rowsize && this.rowsize > 256) && arg.substr(1,7) === this.colAddr2) newState.colorrowdata2 = arg
                     break;
                 default:
                     break;
             }
 
             this.msgType = MT_NONE;
-            this.setState({
-                ...newState
-            })
-            this.forceUpdate()
+            if(Object.keys(newState).length) {
+                this.setState({
+                    ...newState
+                })
+                this.forceUpdate()
+            }
             
             if(this.msgQueue.length > 0) {
                 let shift = this.msgQueue.shift()
@@ -259,6 +318,8 @@ class App extends React.Component {
 
         let slowUpdate = 0;
         let disconnectTimer = 0
+
+
         setInterval(() => {
             disconnectTimer++
             if(disconnectTimer > 5) {
@@ -284,9 +345,66 @@ class App extends React.Component {
                     slowUpdate = 0;
                     this.sendMessage('M777D768\r', MT_MATHUNIT)
                     this.sendMessage('M777D000\r', MT_VIC4)
+
+                    
+                    if(this.state.detailMode === 'RRB') {
+                        let vic = this.processVicInput(this.state.vic4)
+                        if(vic) {
+                            let screenAddr = (vic[0x60] + (vic[0x61] << 8) + (vic[0x62] << 16) + ((vic[0x63] & 0xf) << 24) );
+                            let colAddr = 0xff80000;
+                            let rowsize = (vic[0x58] + (vic[0x59] << 8));
+                            screenAddr += rowsize * this.state.screenrow
+                            colAddr += rowsize * this.state.screenrow
+
+                            let screenAddr2 = (screenAddr + 256).toString(16).padStart(7,0).toUpperCase()
+                            let colAddr2 = (colAddr + 256).toString(16).padStart(7,0).toUpperCase()
+                            this.screenAddr2 = screenAddr2
+                            this.colAddr2 = colAddr2
+
+                            screenAddr = screenAddr.toString(16).padStart(7,0).toUpperCase()
+                            colAddr = colAddr.toString(16).padStart(7,0).toUpperCase()
+                            this.screenAddr = screenAddr
+                            this.colAddr = colAddr
+
+                            this.rowsize = rowsize
+
+                            this.sendMessage('M' + screenAddr + '\r', MT_RRB)
+                            this.sendMessage('M' + colAddr + '\r', MT_RRB_COL)
+
+                            if(rowsize > 256) {
+                                this.sendMessage('M' + screenAddr2 + '\r', MT_RRB2)
+                                this.sendMessage('M' + colAddr2 + '\r', MT_RRB_COL2)                               
+                            }
+                        }
+                    }
+                    
                 }
             }
         }, 150)             
+    }
+
+    processVicInput(inp) {
+
+        /*
+
+        */
+        if(!inp) return null;
+        if(inp.length<40*16) return null;
+        if(inp.substr(0,8) !== 'M777D000') return null;
+        
+        let data = []
+        while(inp.length > 32) {
+            let index = inp.indexOf(":")
+            if(index === -1) break
+            index = inp.indexOf(":", index + 1)
+            if(index === -1) break
+
+            inp = inp.substr(index+1)
+            for(var i=0; i<32; i+=2) {
+                data.push(parseInt(inp.substr(i,2),16))
+            }
+        }
+        return data
     }
 }
 

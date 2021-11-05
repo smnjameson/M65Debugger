@@ -157,19 +157,19 @@ export default class Vic4 extends React.Component {
                                             <td className="vicstats">
                                                 <tr>                                                
                                                     <td className="vic4valueOdd">Banked</td>
-                                                    <td className="vic4valueOdd">${((vic[0x70] && 0xc0) >> 6 ).toString(16).padStart(2,0)}</td>
+                                                    <td className="vic4valueOdd">${((vic[0x70] & 0xc0) >> 6 ).toString(16).padStart(2,0)}</td>
                                                 </tr>
                                                 <tr>                                                
                                                     <td className="vic4valueEven">Text</td>
-                                                    <td className="vic4valueEven">${((vic[0x70] && 0x30) >> 4 ).toString(16).padStart(2,0)}</td>
+                                                    <td className="vic4valueEven">${((vic[0x70] & 0x30) >> 4 ).toString(16).padStart(2,0)}</td>
                                                 </tr>
                                                 <tr>                                                
                                                     <td className="vic4valueOdd">Sprite</td>
-                                                    <td className="vic4valueOdd">${((vic[0x70] && 0x0c) >> 2 ).toString(16).padStart(2,0)}</td>
+                                                    <td className="vic4valueOdd">${((vic[0x70] & 0x0c) >> 2 ).toString(16).padStart(2,0)}</td>
                                                 </tr>                                               
                                                 <tr>                                                
                                                     <td className="vic4valueEven">Alt</td>
-                                                    <td className="vic4valueEven">${((vic[0x70] && 0x03)).toString(16).padStart(2,0)}</td>
+                                                    <td className="vic4valueEven">${((vic[0x70] & 0x03)).toString(16).padStart(2,0)}</td>
                                                 </tr>                                           
                                             </td>  
                                         </tr>
@@ -189,6 +189,7 @@ export default class Vic4 extends React.Component {
     format(val) {
         return new Intl.NumberFormat('en-GB').format(val)
     }
+
     processInput(inp) {
 
         /*
@@ -197,6 +198,7 @@ export default class Vic4 extends React.Component {
         if(!inp) return null;
         if(inp.length<40*16) return null;
         if(inp.substr(0,8) !== 'M777D000') return null;
+        
         let data = []
         while(inp.length > 32) {
             let index = inp.indexOf(":")
