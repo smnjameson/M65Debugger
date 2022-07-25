@@ -1,6 +1,6 @@
 {
   "name": "M65Debugger",
-  "version": "0.5.17",
+  "version": "0.6.1",
   "description": "Live debugging tool for Mega65 hardware",
   "author": "Simon Jameson",
   "license": "",

@@ -489,18 +489,36 @@ wss.on('connection', function connection(ws) {
     } )
     
     ws.onmessage = (msg) => {
-        let prg = msg.data
-        M65_StartCPU()
-        M65_Reset()
-        setTimeout(()=> {
-            M65_StopCPU()
-            M65_LoadPrg(prg, () => {
-                console.log("Send prg done")
-                M65_StartCPU()
-                M65_SendText("run"+String.fromCharCode(13))
-                    ws.send("done")    
+        if(msg.data==="RESET") {
+            console.log("RESET")
+            M65_StartCPU()
+            M65_Reset()
+        } else if(msg.data==="DROPCOM") {
+            console.log("DROPCOM")
+            port.close(function(err) {
+                if(err) console.log("DROPCOM "+err)
+                setTimeout(() => {
+                    
+                }, 2000)
             })
-        }, 5000)
+        } else if(msg.data==="CONNECT") {
+            console.log("CONNECT")
+            connect(comport)
+        }else {
+            let prg = msg.data
+            M65_StartCPU()
+            M65_Reset()
+            setTimeout(()=> {
+                M65_StopCPU()
+                M65_LoadPrg(prg, () => {
+                    console.log("Send prg done")
+                    M65_StartCPU()
+                    M65_SendText("run"+String.fromCharCode(13))
+                        ws.send("done")    
+                })
+            }, 5000)      
+        }
+
         // console.log(msg)
     }
     console.log("connected")
