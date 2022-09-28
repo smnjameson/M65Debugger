@@ -73,6 +73,7 @@ export default class MemoryPanel extends React.Component {
                                 <button className="memorybutton" onClick={() => this.props.onLocChange(0x777d600)}>6551 / 4551</button><br/>
                                 <button className="memorybutton" onClick={() => this.props.onLocChange(0x777d768)}>Math Unit</button><br/>
                                 <button className="memorybutton" onClick={() => this.props.onLocChange(0x777dc00)}>CIA</button><br/>
+                                
                             </td>
                         </tr>
                     </tbody>
@@ -85,6 +86,7 @@ export default class MemoryPanel extends React.Component {
     }
 
     handleSetValue(offset, value) {
+        console.log("handleSetValue "+this.newValue + offset+"  "+value)
         this.props.onMemChange(this.newValue + offset, value)
     }
 

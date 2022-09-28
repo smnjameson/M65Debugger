@@ -148,6 +148,7 @@ table td:first-child {
     top: 60px; */
     height:350px;
     width: 390px;
+    font-size: 9pt;
   }
 
   .rowlabel {

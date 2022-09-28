@@ -1,6 +1,6 @@
 {
   "name": "M65Debugger",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "Live debugging tool for Mega65 hardware",
   "author": "Simon Jameson",
   "license": "",
@@ -19,7 +19,7 @@
     "prod": "cross-env NODE_ENV=production webpack --mode production --config=./webpack.build.config.js && electron --noDevServer .",
     "start": "cross-env NODE_ENV=development webpack serve --hot --host 0.0.0.0 --config=./webpack.dev.config.js --mode development",
     "build": "cross-env NODE_ENV=production webpack --config=./webpack.build.config.js --mode production",
-    "dist": "node_modules/.bin/electron-rebuild -w serialport -f && npm run build && electron-builder",
+    "dist": "electron-rebuild --force-abi=89 -w serialport -f && npm run build && electron-builder",
     "pack": "npm run build && electron-builder --dir"
   },
   "build": {
@@ -42,8 +42,9 @@
     },
     "buildDependenciesFromSource": true,
     "npmRebuild": false,
-    "extraFiles": ["client.js"]
-    
+    "extraFiles": [
+      "client.js"
+    ]
   },
   "dependencies": {
     "@serialport/list": "^9.2.0",
@@ -64,10 +65,10 @@
     "babel-loader": "^8.2.2",
     "cross-env": "^7.0.3",
     "css-loader": "^5.1.1",
-    "electron": "^12.0.13",
-    "electron-builder": "^22.11.7",
+    "electron": "^19.0.9",
+    "electron-builder": "^5.5.0",
     "electron-devtools-installer": "^3.1.1",
-    "electron-packager": "^15.2.0",
+    "electron-packager": "^13.1.1",
     "electron-prebuilt": "^1.4.13",
     "electron-rebuild": "^2.3.5",
     "file-loader": "^6.2.0",

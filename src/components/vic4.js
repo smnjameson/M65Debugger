@@ -129,7 +129,7 @@ export default class Vic4 extends React.Component {
                                                 </tr>
                                                 <tr>                                                
                                                     <td className="vic4valueOdd">V400</td>
-                                                    <td className="vic4valueOdd" style={{color:(vic[0x31] & 0x10 ? 'green': 'red')}}>{vic[0x31] & 0x10 ? "yes" : "no" }</td>
+                                                    <td className="vic4valueOdd" style={{color:(vic[0x31] & 0x08 ? 'green': 'red')}}>{vic[0x31] & 0x08 ? "yes" : "no" }</td>
                                                 </tr>                                               
                                             </td>                                            
                                             <td className="vicstats">

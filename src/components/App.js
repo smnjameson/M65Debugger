@@ -244,7 +244,7 @@ class App extends React.Component {
     }
 
     onCodeChange(loc, value) {
-        let SETSTR = this.state.connectionMode === "xemu" ? 's ' : 'S '
+        let SETSTR = this.state.connectionMode === "xemu" ? 's ' : 's '
         this.sendMessage(SETSTR+loc.toString(16)+' '+value.toString(16)+'\r', MT_CODE)
     }
 
@@ -257,8 +257,9 @@ class App extends React.Component {
 
     onMemChange(loc, value) {
         if(loc >= 0x777d000 && loc < 0x777dfff) loc = loc - 0x7770000
-        let SETSTR = this.state.connectionMode === "xemu" ? 's ' : 'S '
+        let SETSTR = this.state.connectionMode === "xemu" ? 's ' : 's '
         this.sendMessage(SETSTR+loc.toString(16)+' '+value.toString(16)+'\r', MT_MEMORY)
+        console.log(SETSTR+loc.toString(16)+' '+value.toString(16)+'\r')
     }
 
     setupIPC() {
